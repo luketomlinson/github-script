@@ -1,20 +1,19 @@
 import * as core from '@actions/core'
+import {OctokitOptions} from '@octokit/core/dist-types/types'
+import {RequestRequestOptions} from '@octokit/types'
 
 export type RetryOptions = {
   doNotRetry?: number[]
   enabled?: boolean
 }
 
-export type RequestOptions = {
-  retries?: number
-}
-
 export function getRetryOptions(
   retries: number,
-  exemptStatusCodes: number[]
-): [RetryOptions, RequestOptions] {
+  exemptStatusCodes: number[],
+  defaultOptions: OctokitOptions
+): [RetryOptions, RequestRequestOptions | undefined] {
   if (retries <= 0) {
-    return [{enabled: false}, {}]
+    return [{enabled: false}, defaultOptions.request]
   }
 
   const retryOptions: RetryOptions = {
@@ -25,7 +24,8 @@ export function getRetryOptions(
     retryOptions.doNotRetry = exemptStatusCodes
   }
 
-  const requestOptions: RequestOptions = {
+  const requestOptions: RequestRequestOptions = {
+    ...defaultOptions.request,
     retries
   }
 
