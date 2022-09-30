@@ -24,6 +24,9 @@ export function getRetryOptions(
     retryOptions.doNotRetry = exemptStatusCodes
   }
 
+  // The GitHub type has some defaults for `options.request`
+  // see: https://github.com/actions/toolkit/blob/4fbc5c941a57249b19562015edbd72add14be93d/packages/github/src/utils.ts#L15
+  // We pass these in here so they are not overidden.
   const requestOptions: RequestRequestOptions = {
     ...defaultOptions.request,
     retries

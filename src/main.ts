@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import {context, getOctokit} from '@actions/github'
-import {defaults as defaultOctokitOptions} from '@actions/github/lib/utils'
+import {defaults as defaultGitHubOptions} from '@actions/github/lib/utils'
 import * as glob from '@actions/glob'
 import * as io from '@actions/io'
 import {requestLog} from '@octokit/plugin-request-log'
@@ -34,7 +34,7 @@ async function main(): Promise<void> {
   const [retryOpts, requestOpts] = getRetryOptions(
     retries,
     exemptStatusCodes,
-    defaultOctokitOptions
+    defaultGitHubOptions
   )
 
   const opts: Options = {}

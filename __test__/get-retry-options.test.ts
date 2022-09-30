@@ -50,4 +50,20 @@ describe('getRequestOptions', () => {
 
     expect(requestOptions?.retries).toEqual(1)
   })
+
+  test('requestOptions does not override defaults from @actions/github', async () => {
+    const [retryOptions, requestOptions] = getRetryOptions(1, [], {
+      request: {
+        agent: 'default-user-agent'
+      },
+      foo: 'bar'
+    })
+
+    expect(retryOptions.enabled).toBe(true)
+    expect(retryOptions.doNotRetry).toBeUndefined()
+
+    expect(requestOptions?.retries).toEqual(1)
+    expect(requestOptions?.agent).toEqual('default-user-agent')
+    expect(requestOptions?.foo).toBeUndefined() // this should not be in the `options.request` object, but at the same level as `request`
+  })
 })
